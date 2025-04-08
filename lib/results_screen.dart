@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:adv_basics/data1/questions.dart';
 import 'package:adv_basics/questions_summary.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ResultsScreen extends StatelessWidget {
   const ResultsScreen({
@@ -26,6 +27,12 @@ class ResultsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final summaryData = getSummaryData();
+    final numTotalQuestions = questions.length;
+    ;
+    final numCorrectQuestions = summaryData.where((data) {
+      return data['user_answer'] == data['correct_answer'];
+    }).length;
     return SizedBox(
       width: double.infinity,
       child: Container(
@@ -33,18 +40,44 @@ class ResultsScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('You answered X out of Y questions correctly!'),
-            const SizedBox(
-              height: 30,
-            ),
-            QuestionsSummary(getSummaryData()),
-            const SizedBox(
-              height: 30,
-            ),
-            TextButton(onPressed: () {}, child: Text('Restart Quiz!'))
-          ],
+        Text(
+        'You answered $numCorrectQuestions out of $numTotalQuestions correctly!',
+          style: GoogleFonts.lato(
+            color: Colors.white,
+            fontSize: 15,
+          ),
         ),
+        const SizedBox(
+          height: 30,
+        ),
+        QuestionsSummary(getSummaryData()),
+        const SizedBox(
+          height: 30,
+        ),
+        TextButton(
+          onPressed: () {
+            // Add your restart logic here
+          },
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            // Keeps the button as compact as possible
+            children: [
+              Icon(Icons.arrow_right_alt, color: Colors.white),
+              SizedBox(width: 8), // spacing between icon and text
+              Text(
+                'Restart Quiz!',
+                style: GoogleFonts.lato(
+                  color: Colors.white,
+                  fontSize: 15,
+                ),
+              ),
+            ],
+          ),
       ),
+      ],
+    ),
+    )
+    ,
     );
   }
 }
